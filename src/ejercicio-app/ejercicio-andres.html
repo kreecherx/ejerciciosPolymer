@@ -1,0 +1,101 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+
+<dom-module id="ejercicio-andres">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .container{
+        width: 90vh;
+        height: 35vh;
+        background-color: cyan;
+        padding: 15px;
+      }
+
+      .rojo{
+        background-color: red;
+        margin-bottom: 10px;
+      }
+
+      .verde{
+        background-color: greenyellow;
+        margin-bottom: 10px;
+      }
+
+      .marca{
+        background-color: greenyellow;
+        padding: 20px;
+        margin-top: 20px;
+      }
+    </style>
+    <h2>Polymer</h2>
+    <div class="container">
+      <div class$="[[clase]]">
+        <span>[[nombre]] [[modelo]]</span>
+      </div>
+      Nombre:<input type="text" value="{{nombre::input}}">
+
+      <div class="marca">
+        <h4>Nombre: [[nombre]]</h4>
+        <template is="dom-if" if="{{muestra}}">
+            <h4>Marca: [[marca]]</h4>
+        </template>
+        Modelo:<input type="text" value="{{modelo::input}}">
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class EjercicioAndres extends Polymer.Element {
+      static get is() { return 'ejercicio-andres'; }
+      static get properties() {
+        return {
+          nombre: {
+            type: String,
+            observer: "comprueba"
+          },
+          modelo: {
+            type: String,
+          },
+          marca:{
+            type: String
+          },
+          carros: {
+            type: Array,
+            value: [
+              {nombre: "Vento", marca: "Volkswagen"},
+              {nombre: "Spark", marca:"Chervolet"}
+            ]
+          },
+          clase: {
+            type: String,
+            value: "rojo"
+          },
+          muestra:{
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      comprueba(){
+        let a = this.carros.filter((item) =>{
+          return item.nombre === this.nombre
+        })
+        if (a.length){
+          this.marca = a[0].marca;
+          this.clase = "verde";
+          this.muestra = true;
+        } else{
+          this.muestra = false;
+          this.clase = "rojo";
+        }
+      }
+    }
+
+    window.customElements.define(EjercicioAndres.is, EjercicioAndres);
+  </script>
+</dom-module>

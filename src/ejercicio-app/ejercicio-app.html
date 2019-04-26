@@ -1,0 +1,85 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ejercicio-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container {
+        display: grid;
+        background-color: bisque;
+        grid-template-columns: [inicio] 1fr [medio1] 1fr [medio2] 1fr [fin];
+        grid-template-rows: [inrow] 1fr [medrow] 1fr [finrow]; 
+        grid-gap: 10px;
+        text-align: center;
+      } 
+
+      .item {
+        border-style: solid;
+      }
+
+      .item:nth-of-type(4) {
+        border-style: hidden;
+        grid-column: inicio/fin;
+        grid-row: medrow/finrow;
+        font-size: 2em;
+      }
+    </style>
+    <div class="container">
+        <div class="item">
+            <h2>Pedro: Tengo [[pers]] torta(s) de chilaquiles(s)!</h2>
+            <input type="button" value="Recibir torta de chilaquiles" on-click="agregar">
+            <input type="button" value="Regresar torta de chilaquiles" on-click="quitar">
+        </div>
+        <div class="item">
+            <ejercicio-app-1 cant="{{cant}}"></ejercicio-app-1>
+        </div>
+        <div class="item">
+            <ejercicio-app-2 cant="{{cant}}"></ejercicio-app-2>
+        </div>
+        <div class="item">
+            <h1>Quedan [[cant]] torta(s) de chilaquiles!</h1>
+            <input type="text" value="{{cant::input}}">
+        </div>
+    </div>
+  </template>
+
+  <script>
+    class EjercicioApp extends Polymer.Element {
+      static get is() { return 'ejercicio-app'; }
+      static get properties() {
+        return {
+          cant: {
+            type: Number,
+            value: 10,
+            notify: true
+          },
+          pers:{
+            type: Number,
+            value: 0
+          }
+        };
+      }
+
+      agregar(){
+        if(this.cant > 0){
+          this.pers = parseInt(this.pers) + 1;
+          this.cant = parseInt(this.cant) - 1;
+        } else {
+          alert("Ya no hay tortas de chilaquiles >:c")
+        }
+      }
+
+      quitar(){
+        if(this.pers > 0){
+          this.pers = parseInt(this.pers) - 1;
+          this.cant = parseInt(this.cant) + 1;
+        } else {
+          alert("No tienes tortas de chilaquiles")
+        }
+      }
+    }
+    window.customElements.define(EjercicioApp.is, EjercicioApp);
+  </script>
+</dom-module>

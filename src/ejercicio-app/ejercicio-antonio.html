@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="./ejercicio-antonio.2.html">
+
+<dom-module id="ejercicio-antonio">
+    <template>
+        <style>
+            :host{
+                display: block;
+            }
+            table {
+                width: 90vw;
+                border-collapse: collapse;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 15px;
+            }
+
+            img{
+                height: 150px;
+                width: 150px;
+            }
+        </style>
+        <table class="frutero">
+            <tr>
+                <td><a on-click="agrega"><img alt="Manzana" src="../img/manzana.png"></a></td>
+                <td><a on-click="agrega"><img alt="Pera" src="../img/pera.png"></a></td>
+                <td><a on-click="agrega"><img alt="Uvas" src="../img/uvas.png"></a></td>
+                <td><a on-click="agrega"><img alt="Kiwi" src="../img/kiwi.png"></a></td>
+            </tr>
+        </table>
+        <ejercicio-antonio-2 producto="{{producto}}"></ejercicio-antonio-2>
+    </template>
+    <script>
+        class Antonio extends Polymer.Element {
+            static get is(){return "ejercicio-antonio"}
+            static get properties(){
+                return{
+                    carro:{
+                        type: Array,
+                        value: []
+                    },
+                    producto:{
+                        type: String
+                    }
+                }
+            }
+
+            agrega(model){
+                this.producto = model.target.alt
+            }
+        }
+        customElements.define(Antonio.is, Antonio)
+    </script>
+</dom-module>

@@ -1,0 +1,53 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ejercicio-app-1">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Pepe: Tengo [[pers]] torta(s) de chilaquiles!</h2>
+    <input type="button" value="Recibir torta de chilaquiles" on-click="agregar">
+    <input type="button" value="Regresar torta de chilaquiles" on-click="quitar">
+  </template>
+
+  <script>
+    class EjercicioApp1 extends Polymer.Element {
+      static get is() { return 'ejercicio-app-1'; }
+      static get properties() {
+        return {
+          cant: {
+            type: Number,
+            value: 10,
+            notify: true
+          },
+          pers:{
+            type: Number,
+            value: 0
+          }
+        };
+      }
+
+      agregar(){
+        if(this.cant > 0){
+          this.pers = parseInt(this.pers) + 1;
+          this.cant = parseInt(this.cant) - 1;
+        } else {
+          alert("Ya no hay tortas de chilaquiles >:c")
+        }
+      }
+
+      quitar(){
+        if(this.pers > 0){
+          this.pers = parseInt(this.pers) - 1;
+          this.cant = parseInt(this.cant) + 1;
+        } else {
+          alert("No tienes tortas de chilaquiles")
+        }
+      }
+    }
+
+    window.customElements.define(EjercicioApp1.is, EjercicioApp1);
+  </script>
+</dom-module>

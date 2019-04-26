@@ -1,0 +1,133 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ejercicio-oscar">
+    <template>
+        <style>
+            :host{
+                display: block;
+                background-color: aquamarine;
+            }
+            
+            .container{
+                display: grid;
+                grid-template-columns: [inicio] 1fr [medio] 1fr [fin];
+                grid-template-rows: [rinicio] 1fr [rmedio] 1fr [rfin];
+                grid-gap: 10px;
+            }
+
+            .item:nth-of-type(1){
+                grid-column: inicio/fin;
+                grid-row: rinicio/rmedio;
+                text-align: center;
+            }
+
+            .item:nth-of-type(2){
+                grid-column: inicio/medio;
+                grid-row: rmedio/rfin;
+                text-align: center;
+            }
+
+            .item:nth-of-type(3){
+                grid-column: medio/fin;
+                grid-row: rmedio/rfin;
+                text-align: center;
+            }
+
+            .array{
+                background-color:#B3B3FF;
+            }
+
+            button:hover{
+                background-color: deepskyblue;
+            }
+        </style>
+        <h1>Array Circular</h1>
+        <div class="container">
+            <div class="item">
+                <span>Size: </span><input type="number" min="1" max="100" value="{{size::input}}">
+                <span>Rotations: </span><input type="number" min="1" max="100" value="{{rot::input}}">
+            </div>
+
+            <div class="item" id="random">
+                <!-- TODO code here-->
+            </div>
+            <div class="item" id="rotated">
+                <!-- TODO code here-->
+            </div>
+        </div>
+    </template>
+    <script>
+        class Oscar extends Polymer.Element {
+            static get is(){ return "ejercicio-oscar" }
+            static get properties(){
+                return {
+                    size: {
+                        type: Number,
+                        value: 5,
+                        observer: "crear"
+                    },
+                    rot: {
+                        type: Number,
+                        value: 1,
+                        observer: "rotar"
+                    },
+                    arr: {
+                        type: Array,
+                        value: []
+                    }
+                }
+            }
+
+            crear(){
+                while (this.$.random.hasChildNodes()) {   
+                   this.$.random.removeChild(this.$.random.firstChild);
+                }
+
+                let i = 1;
+                let arre = [];
+                for(i; i <= this.size; i++){
+                    arre.push(Math.floor(Math.random()*25))
+                }
+                this.arr = arre;
+                console.log(this.arr)
+                this.arr.forEach((item) =>{
+                    var obj = document.createElement("button");
+                    obj.innerHTML = item;
+                    obj.setAttribute("class","array")
+                    this.$.random.appendChild(obj)
+                })
+                this.rotar()
+            }
+
+            rotar(){
+                while (this.$.rotated.hasChildNodes()) {   
+                   this.$.rotated.removeChild(this.$.rotated.firstChild);
+                }
+                let temp = []
+                for(var h = 0; h < this.arr.length; h++){
+                    temp.push(this.arr[h])
+                }
+                console.log("ORIGINAL----->", temp)
+                for(let i = 1; i <= this.rot; i++){
+                    temp.unshift(temp.pop())
+                }
+                console.log("MODIFICADO----->", temp)
+
+                temp.forEach((el) =>{
+                    var obj = document.createElement("button");
+                    obj.innerHTML = el;
+                    obj.setAttribute("class","array")
+                    this.$.rotated.appendChild(obj)
+                })
+
+                this.$.rotated.childNodes.forEach((item) =>{
+                    item.addEventListener(('mouseout'), (e) =>{
+                        item.style.display = "none";
+                    })
+                })
+                
+            }
+        }
+        customElements.define(Oscar.is, Oscar)
+    </script>
+</dom-module>

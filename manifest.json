@@ -1,0 +1,6 @@
+{
+  "name": "ejercicio",
+  "short_name": "ejercicio",
+  "start_url": "/",
+  "display": "standalone"
+}
