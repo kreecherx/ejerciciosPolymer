@@ -1,0 +1,75 @@
+<base href="https://cdn.rawgit.com/download/polymer-cdn/2.6.0/lib/">
+<script src="webcomponentsjs/webcomponents-loader.js"></script>
+
+<link rel="import" href="iron-ajax/iron-ajax.html">
+
+<link rel="import" href="polymer/polymer-element.html">
+
+<dom-module id="polymer-element">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <h1>Day <span>[[day]]</span> !!</h1>
+        <h2>Month <span>[[month]]</span> !!</h2>
+        <div>
+            Day:<input type="text" value="{{day::input}}">
+            Month:<input type="text" value="{{month::input}}">
+        </div>
+        <div><h3>[[today.date.day]]</h3></div>
+
+        <button on-click="accion">Aceptar</button>
+    </template>
+    <script>
+        class PolymerElement extends Polymer.Element {
+            static get is() {return "polymer-element"; }
+            static get observers() {
+                return ['changedValue(today.date.*)', 'changedValue2(day,month)']
+            }
+            static get properties(){
+                return {
+                    day: {type: String, value:"monday"},
+                    month: String,
+                    days: {type: Array, value: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']},
+                    today: {
+                        type: Object,
+                        value: {date: { day:'Monday', month:'January', year:'2019', }, active: false}
+                    }
+                };
+            }
+
+            accion(){
+                this.set('today.date.day', 'lunes')
+            }
+
+            changedValue(a,b){
+                console.log(`changedValue: ${a} ${b}`)
+                console.log(a)
+            }
+
+            changedValue2(a,b){
+                console.log(`changedValue: ${a} ${b}`)
+            }
+
+            created(){
+                console.log('------------> created')
+            }
+
+            constructor(){
+                super();
+                console.log("-----------------------> Constructor")
+            }
+
+            ready(){
+                super.ready()
+                console.log("YA ESTUFAS!")
+            }
+        }
+        customElements.define(PolymerElement.is, PolymerElement);
+    </script>
+</dom-module>
+
+<polymer-element day="Hola"></polymer-element>

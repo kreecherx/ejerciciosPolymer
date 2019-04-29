@@ -1,0 +1,164 @@
+<base href="https://cdn.rawgit.com/download/polymer-cdn/1.8.0/lib/">
+<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="polymer/polymer.html">
+
+<dom-module id="polymer1-bryan">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .container {
+                display: grid;
+                background-color: bisque;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                grid-template-columns: [inicio] 1fr [medio1] 1fr [medio2] 1fr [fin];
+                grid-template-rows: [inrow] 1fr [medrow] 1fr [finrow];
+                grid-gap: 10px;
+                margin: 10px;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .item {
+                border-style: solid;
+            }
+
+            .item:nth-of-type(4) {
+                border-style: hidden;
+                grid-column: inicio/fin;
+                grid-row: medrow/finrow;
+                font-size: 2em;
+            }
+        </style>
+        <div class="container">
+            <div class="item">
+                <h2>Pedro: Tengo [[pers]] torta(s) de chilaquiles!</h2>
+                <input type="button" value="Recibir torta de chilaquiles" on-click="agregar">
+                <input type="button" value="Regresar torta de chilaquiles" on-click="quitar">
+                <template is="dom-if" if="{{mostrarI}}">
+                    <h3>Ya no tienes tortas que regresar >:c</h3>
+                </template>
+            </div>
+            <div class="item">
+                <polymer1-hijo nombre="Pepe" cant="{{cant}}" mostrar-a="{{mostrarA}}"></polymer1-hijo>
+            </div>
+            <div class="item">
+                <polymer1-hijo nombre="Toño" cant="{{cant}}" mostrar-a="{{mostrarA}}"></polymer1-hijo>
+            </div>
+            <div class="item">
+                <h1>Quedan [[cant]] torta(s) de chilaquiles!</h1>
+                <template is="dom-if" if="{{mostrarA}}">
+                    <h3>Ya no tienes tortas que agarrar >:c</h3>
+                </template>
+                <input type="number" min="0" value="{{cant::input}}">
+            </div>
+        </div>
+    </template>
+    <script>
+        document.addEventListener('WebComponentsReady', function () {
+            Polymer({
+                is: 'polymer1-bryan',
+                properties: {
+                    cant: {
+                        type: Number,
+                        value: 10,
+                        observer: "checar"
+                    },
+                    pers: {
+                        type: Number,
+                        value: 0
+                    }
+                },
+                agregar: function () {
+                    if (this.cant > 0) {
+                        this.mostrarI = false;
+                        this.pers = parseInt(this.pers) + 1;
+                        this.cant = parseInt(this.cant) - 1;
+                    }
+                },
+                quitar: function () {
+                    if (this.pers > 0) {
+                        this.pers = parseInt(this.pers) - 1;
+                        this.cant = parseInt(this.cant) + 1;
+                    } else {
+                        this.mostrarI = true;
+                    }
+                },
+                checar: function () {
+                    if (this.cant > 0) {
+                        this.mostrarA = false;
+                    } else {
+                        this.cant = 0;
+                        this.mostrarA = true;
+                    }
+                }
+            })
+        });
+    </script>
+</dom-module>
+
+<dom-module id="polymer1-hijo">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <h2>[[nombre]]: Tengo [[pers]] torta(s) de chilaquiles!</h2>
+        <input type="button" value="Recibir torta de chilaquiles" on-click="agregar">
+        <input type="button" value="Regresar torta de chilaquiles" on-click="quitar">
+        <template is="dom-if" if="{{mostrarI}}">
+            <h3>Ya no tienes tortas que regresar >:c</h3>
+        </template>
+    </template>
+
+    <script>
+        Polymer({
+            is: "polymer1-hijo",
+            properties: {
+                cant: {
+                    type: Number,
+                    value: 10,
+                    notify: true
+                },
+                pers: {
+                    type: Number,
+                    value: 0
+                },
+                mostrarA: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                mostrarI: {
+                    type: Boolean,
+                    value: false
+                },
+                nombre: {
+                    type: String,
+                    value: ""
+                }
+            },
+            agregar: function () {
+                if (this.cant > 0) {
+                    this.mostrarI = false;
+                    this.pers = parseInt(this.pers) + 1;
+                    this.cant = parseInt(this.cant) - 1;
+                }
+            },
+            quitar: function () {
+                if (this.pers > 0) {
+                    this.pers = parseInt(this.pers) - 1;
+                    this.cant = parseInt(this.cant) + 1;
+                } else {
+                    this.mostrarI = true;
+                }
+            }
+        })
+    </script>
+</dom-module>
+
+<polymer1-bryan></polymer1-bryan>

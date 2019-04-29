@@ -1,4 +1,9 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<base href="https://cdn.rawgit.com/download/polymer-cdn/2.6.0/lib/">
+<script src="webcomponentsjs/webcomponents-loader.js"></script>
+
+<link rel="import" href="iron-ajax/iron-ajax.html">
+
+<link rel="import" href="polymer/polymer-element.html">
 
 <dom-module id="ejercicio-app-1">
   <template>
@@ -10,6 +15,9 @@
     <h2>Pepe: Tengo [[pers]] torta(s) de chilaquiles!</h2>
     <input type="button" value="Recibir torta de chilaquiles" on-click="agregar">
     <input type="button" value="Regresar torta de chilaquiles" on-click="quitar">
+    <template is="dom-if" if="{{mostrarI}}">
+      <h3>Ya no tienes tortas que regresar >:c</h3>
+    </template>
   </template>
 
   <script>
@@ -25,16 +33,19 @@
           pers:{
             type: Number,
             value: 0
+          },
+          mostrarI: {
+            type: Boolean,
+            value: false
           }
         };
       }
 
       agregar(){
         if(this.cant > 0){
+          this.mostrarI = false;
           this.pers = parseInt(this.pers) + 1;
           this.cant = parseInt(this.cant) - 1;
-        } else {
-          alert("Ya no hay tortas de chilaquiles >:c")
         }
       }
 
@@ -43,7 +54,7 @@
           this.pers = parseInt(this.pers) - 1;
           this.cant = parseInt(this.cant) + 1;
         } else {
-          alert("No tienes tortas de chilaquiles")
+          this.mostrarI = true;
         }
       }
     }

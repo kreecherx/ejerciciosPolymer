@@ -1,25 +1,34 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="./ejercicio-antonio.2.html">
+
+<base href="https://cdn.rawgit.com/download/polymer-cdn/2.6.0/lib/">
+
+<script src="webcomponentsjs/webcomponents-loader.js"></script>
+
+<link rel="import" href="iron-ajax/iron-ajax.html">
+
+<link rel="import" href="polymer/polymer.html">
+
 
 <dom-module id="ejercicio-antonio">
     <template>
         <style>
-            :host{
+            :host {
                 display: block;
             }
+
             table {
                 width: 90vw;
                 border-collapse: collapse;
                 text-align: center;
                 margin-bottom: 25px;
             }
-            th, td {
+
+            th,
+            td {
                 border: 1px solid black;
                 padding: 15px;
             }
 
-            img{
+            img {
                 height: 150px;
                 width: 150px;
             }
@@ -32,27 +41,93 @@
                 <td><a on-click="agrega"><img alt="Kiwi" src="../img/kiwi.png"></a></td>
             </tr>
         </table>
-        <ejercicio-antonio-2 producto="{{producto}}"></ejercicio-antonio-2>
+        <ejercicio-antonio2 producto="{{producto}}"></ejercicio-antonio2>
     </template>
     <script>
         class Antonio extends Polymer.Element {
-            static get is(){return "ejercicio-antonio"}
-            static get properties(){
-                return{
-                    carro:{
+            static get is() { return "ejercicio-antonio" }
+            static get properties() {
+                return {
+                    carro: {
                         type: Array,
                         value: []
                     },
-                    producto:{
+                    producto: {
                         type: String
                     }
                 }
             }
 
-            agrega(model){
+            agrega(model) {
                 this.producto = model.target.alt
             }
         }
-        customElements.define(Antonio.is, Antonio)
+        window.customElements.define(Antonio.is, Antonio)
     </script>
 </dom-module>
+
+<dom-module id="ejercicio-antonio2">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            table {
+                width: 90vw;
+                border-collapse: collapse;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            th, td {
+                border: 1px solid black;
+                padding: 3px;
+            }
+
+            .carrito thead {
+                background-color: gray;
+                color: white;
+                font-size: 1.2em;
+            }
+        </style>
+        <table class="carrito">
+            <thead>
+                <td>Carrito</td>
+            </thead>
+            <template is="dom-repeat" items="{{carro}}">
+                <tr>
+                    <td>{{item.nombre}}</td>
+                </tr>
+            </template>
+        </table>
+    </template>
+    <script>
+        class Antonio2 extends Polymer.Element {
+            static get is() { return "ejercicio-antonio2" }
+            static get properties() {
+                return {
+                    carro: {
+                        type: Array,
+                        value: []
+                    },
+                    producto: {
+                        type: String,
+                        notify: true,
+                        observer: "agrega"
+                    }
+                }
+            }
+
+            agrega() {
+                if (!(this.producto == "")) {
+                    this.push('carro', { nombre: this.producto });
+                    this.producto = "";
+                }
+            }
+        }
+        window.customElements.define(Antonio2.is, Antonio2)
+    </script>
+</dom-module>
+
+<ejercicio-oscar></ejercicio-oscar>

@@ -1,0 +1,166 @@
+<base href="https://cdn.rawgit.com/download/polymer-cdn/1.8.0/lib/">
+<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="polymer/polymer.html">
+
+<dom-module is="ejercicio-eduardo">
+    <template>
+        <style>
+            :host {
+                background-color: lavender;
+                display: block;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .rojo {
+                font-size: 70px;
+                color: red;
+            }
+
+            .verde {
+                font-size: 70px;
+                color: rgb(5, 221, 5);
+            }
+        </style>
+        <div class="container">
+            <template is="dom-if" if="[[!show]]">
+                <div class="item">
+                    <label>Nombre: </label><input type="text" value="{{name::input}}" placeholder="Ingresa un nombre">
+                    <button on-click="start">Comenzar</button>
+                    <h4 class$="[[warnClass]]">Debes escribir un nombre primero!!</h4>
+                </div>
+            </template>
+
+            <template is="dom-if" if="[[show]]">
+                <div class="item" id="teclas">
+                    <button on-click="restart">Reiniciar</button>
+                    <polymer-teclas actual="{{actual}}"></polymer-teclas>
+                </div>
+            </template>
+
+            <div class="item">
+                <label class$="[[clase]]">[[name]]</label>
+            </div>
+        </div>
+    </template>
+    <script>
+        document.addEventListener('WebComponentsReady', function () {
+            Polymer({
+                is: 'ejercicio-eduardo',
+                properties: {
+                    name: {
+                        type: String,
+                        value: ""
+                    },
+                    show: {
+                        type: Boolean,
+                        value: false
+                    },
+                    clase: {
+                        type: String,
+                        value: ""
+                    },
+                    warnClass: {
+                        type: String,
+                        value: "hidden"
+                    },
+                    actual: {
+                        type: Array,
+                        value: []
+                    }
+                },
+                start: function () {
+                    if (!(this.name === "")) {
+                        this.actual.length = 0
+                        this.show = true;
+                        this.clase = "rojo";
+
+                        document.addEventListener("keypress", (e) => {
+                            var l = this.actual.unshift({ codigo: e.keyCode, tecla: e.key });
+                            this.actual = this.actual.slice(5);
+                            if (this.name.includes(e.key)) {
+                                this.clase = "verde";
+                            } else {
+                                this.clase = "rojo";
+                            }
+                            console.log(e.key, e.keyCode)
+                            console.log(this.actual)
+                        })
+                    } else {
+                        this.warnClass = ""
+                    }
+
+                    console.log(this.show)
+                },
+                restart: function () {
+                    this.show = false;
+                    this.clase = ""
+                    this.warnClass = "hidden"
+                    this.name = ""
+                }
+            })
+        })
+    </script>
+</dom-module>
+
+<dom-module id="polymer-teclas">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            table {
+                border-collapse: collapse;
+                height: 10vh;
+                margin: 15px;
+                padding: 5px;
+                text-align: center;
+                width: 50vh;
+            }
+
+            thead {
+                font-weight: bold;
+            }
+        </style>
+        <div class="container">
+            <div class="item">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Tecla</td>
+                            <td>Código</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>[[actual.0.tecla]]</td>
+                        <td>[[actual.0.codigo]]</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="item">
+                <template is="dom-repeat" items="{{actual}}">
+                    <span>[[item.tecla]] --></span>
+                </template>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'polymer-teclas',
+            properties: {
+                actual: {
+                    type: Array
+                }
+            }
+        })
+    </script>
+</dom-module>
+
+<ejercicio-eduardo></ejercicio-eduardo>

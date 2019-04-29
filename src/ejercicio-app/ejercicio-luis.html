@@ -1,0 +1,71 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ejercicio-luis">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <div class="container">
+            <label>Arreglo: [[arr]]</label>
+            <div><button on-click="change">Filtrar</button></div>
+            <template is="dom-if" if="{{show}}">
+                <luis-calculaltions></luis-calculaltions>
+            </template>
+        </div>
+    </template>
+    <script>
+        class Luis extends Polymer.Element {
+            static get is() { return 'ejercicio-luis' }
+            static get properties() {
+                return {
+                    arr: {
+                        type: Array,
+                        value: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    },
+                    show: {
+                        type: Boolean,
+                        value: false
+                    }
+                }
+            }
+        }
+        customElements.define(Luis.is, Luis)
+    </script>
+</dom-module>
+
+<dom-module id="luis-calculations">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+    </template>
+    <script>
+        class Luis2 extends Polymer.Element {
+            static get is() { return 'luis-calculations' }
+            static get properties() {
+                return {
+                    arr: {
+                        type: Array
+                    },
+                    mayor: {
+                        type: Number,
+                        value: 0
+                    },
+                    menor: {
+                        type: Number,
+                        value: 0
+                    }
+                }
+            }
+
+            comparar() {
+
+            }
+        }
+        customElements.define(Luis2.is, Luis2)
+    </script>
+</dom-module>
